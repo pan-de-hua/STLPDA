@@ -11,7 +11,6 @@ using System.Xml;
 using System.Reflection;
 using System.Net;
 using System.Security.Cryptography;
-
 namespace STL.PDA
 {
     public partial class Login : Form
