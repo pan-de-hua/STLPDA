@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://128.128.95.12:50000/dir/wsdl?p=ic/cf818cc84d083c97a0fdcc084702cb41" filename="SI_MM028_PDA2SAP_LOGIN_OUT.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>
