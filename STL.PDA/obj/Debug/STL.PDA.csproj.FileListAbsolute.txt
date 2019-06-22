@@ -8,3 +8,4 @@ C:\Users\pandehua\Desktop\STL_PDA\STL.PDA\STL.PDA\obj\Debug\STL.PDA.exe
 C:\Users\pandehua\Desktop\STL_PDA\STL.PDA\STL.PDA\obj\Debug\STL.PDA.pdb
 C:\Users\pandehua\Desktop\STL_PDA\STL.PDA\STL.PDA\obj\Debug\STL.PDA.Login.resources
 C:\Users\pandehua\Desktop\STL_PDA\STL.PDA\STL.PDA\bin\Debug\config.xml
+C:\Users\pandehua\Desktop\STL_PDA\STL.PDA\STL.PDA\obj\Debug\STL.PDA.MainForm.resources

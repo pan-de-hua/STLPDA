@@ -29,12 +29,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
-            this.Menu = this.mainMenu1;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Text = "MainControl";
+            this.SuspendLayout();
+            // 
+            // MainForm
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(638, 455);
+            this.MaximizeBox = false;
+            this.Menu = this.mainMenu1;
+            this.MinimizeBox = false;
+            this.Name = "MainForm";
+            this.Text = "MainControl";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Closed += new System.EventHandler(this.MainForm_Closed);
+            this.ResumeLayout(false);
+
         }
 
         #endregion

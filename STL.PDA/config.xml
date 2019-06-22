@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config>
+  <WebService>
+    <domain>http://mail.satellite-petrochemical.com:8000</domain>
+    <userName>ey_pdh</userName>
+    <password>passw0rd</password>
+    <LoginURL>
+      <![CDATA[/XISOAPAdapter/MessageServlet?senderParty=&senderService=BC_WINCE&receiverParty=&receiverService=&interface=SI_MM028_PDA2SAP_LOGIN_OUT&interfaceNamespace=http%3A%2F%2Fwww.stlerpproject.com.cn%2FPDA%2FMM]]></LoginURL>
+  </WebService>
   <remUser>ADMIN</remUser>
   <remPassword></remPassword>
+  <RememberMe></RememberMe>
 </config>

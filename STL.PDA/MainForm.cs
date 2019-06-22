@@ -15,5 +15,10 @@ namespace STL.PDA
         {
             InitializeComponent();
         }
+
+        private void MainForm_Closed(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

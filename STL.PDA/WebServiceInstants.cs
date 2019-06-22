@@ -16,6 +16,7 @@ namespace STL.PDA
         password,
         remUser,
         remPassword,
+        RememberMe,
         domain,
         LoginURL
     }
@@ -30,8 +31,10 @@ namespace STL.PDA
         public static string GetURL(ServiceType ServiceType)
         {
             XmlDocument xmlDoc;
-            string xmlFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\config.xml";
+            string app_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            string xmlFile = app_path + "\\config.xml";
 
+            //MessageBox.Show(Path.GetFullPath(Assembly.GetExecutingAssembly().GetName().CodeBase));
             if (!System.IO.File.Exists(xmlFile))
             {
                 MessageBox.Show("The config.xml file is not exist.\n Cannot Start the Application!");
@@ -46,11 +49,11 @@ namespace STL.PDA
                 {
                     case ServiceType.password:
                         {
-                            return xmlDoc.SelectSingleNode("/config/password").InnerText;
+                            return xmlDoc.SelectSingleNode("/config/WebService/password").InnerText;
                         }
                     case ServiceType.userName:
                         {
-                            return xmlDoc.SelectSingleNode("/config/userName").InnerText;
+                            return xmlDoc.SelectSingleNode("/config/WebService/userName").InnerText;
                         }
                     case ServiceType.remUser:
                         {
@@ -60,13 +63,21 @@ namespace STL.PDA
                         {
                             return xmlDoc.SelectSingleNode("/config/remPassword").InnerText;
                         }
+                    case ServiceType.RememberMe:
+                        {
+                            return xmlDoc.SelectSingleNode("/config/RememberMe").InnerText;
+                        }
                     case ServiceType.domain:
                         {
-                            return xmlDoc.SelectSingleNode("/config/domain").InnerText;
+                            return xmlDoc.SelectSingleNode("/config/WebService/domain").InnerText;
                         }
                     case ServiceType.LoginURL:
                         {
-                            return xmlDoc.SelectSingleNode("/config/LoginURL").InnerText;
+                            StringBuilder s = new StringBuilder();
+                            s.Append(xmlDoc.SelectSingleNode("/config/WebService/domain").InnerText);
+                            s.Append(xmlDoc.SelectSingleNode("/config/WebService/LoginURL").InnerText);
+
+                            return s.ToString() ;
                         }
                         
                     default: return "";

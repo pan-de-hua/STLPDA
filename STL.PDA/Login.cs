@@ -16,7 +16,7 @@ namespace STL.PDA
 {
     public partial class Login : Form
     {
-        protected NetworkCredential nc = new NetworkCredential(WebServiceInstants.GetURL(ServiceType.userName).ToString(), WebServiceInstants.GetURL(ServiceType.password).ToString(), WebServiceInstants.GetURL(ServiceType.domain).ToString());
+        protected NetworkCredential nc = new NetworkCredential(WebServiceInstants.GetURL(ServiceType.userName).ToString(), WebServiceInstants.GetURL(ServiceType.password).ToString());
         public Login()
         {
             InitializeComponent();
@@ -25,25 +25,31 @@ namespace STL.PDA
         private void Form1_Load(object sender, EventArgs e)
         {
             txtUserID.Text = WebServiceInstants.GetURL(ServiceType.remUser);
-            txtPassword.Text = WebServiceInstants.GetURL(ServiceType.remPassword);
+            if (bool.TrueString.Equals(WebServiceInstants.GetURL(ServiceType.RememberMe)))
+            {
+                chkRememberMe.Checked = true;
+                txtPassword.Text = WebServiceInstants.GetURL(ServiceType.remPassword);
+            }
+            else
+            {
+                chkRememberMe.Checked = false;
+            }
         }
 
         private void SaveToConfig()
         {
             try
             {
+                string ApplicationPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(ApplicationPath + "\\config.xml");
+                xmlDoc.SelectSingleNode("/config/remUser").InnerText = txtUserID.Text.Trim();
+                xmlDoc.SelectSingleNode("/config/RememberMe").InnerText = chkRememberMe.Checked.ToString();
                 if (chkRememberMe.Checked)
                 {
-                    string ApplicationPath = Path.GetDirectoryName(
-                        Assembly.GetExecutingAssembly().GetName().CodeBase);
-
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(ApplicationPath + "\\config.xml");
-                    xmlDoc.SelectSingleNode("/config/remUser").InnerText = txtUserID.Text.Trim();
                     xmlDoc.SelectSingleNode("/config/remPassword").InnerText = txtPassword.Text.Trim();
-
-                    xmlDoc.Save(ApplicationPath + "\\config.xml");
                 }
+                xmlDoc.Save(ApplicationPath + "\\config.xml");
             }
             catch (Exception ex)
             {
@@ -55,21 +61,30 @@ namespace STL.PDA
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (!txtUserID.Text.Equals("") && !txtPassword.Text.Equals(""))
-                {
-                    MD5 md5 = new MD5CryptoServiceProvider();
-                    byte[] result = md5.ComputeHash(Encoding.UTF8.GetBytes(txtPassword.Text));
-                    StringBuilder sBuilder = new StringBuilder();
-                    foreach (byte t in result)
-                    {
-                        sBuilder.Append(t.ToString("x2"));
-                    }
+                btn_login.Focus();
+            }
+        }
 
-                    UserLogin.SI_MM028_PDA2SAP_LOGIN_OUTService svc = new UserLogin.SI_MM028_PDA2SAP_LOGIN_OUTService();
-                    svc.Credentials = nc;
+        private void btn_login_Click(object sender, EventArgs e)
+        {
+                login();
+        }
+
+        private void login()
+        {
+            if (!txtUserID.Text.Equals("") && !txtPassword.Text.Equals(""))
+            {
+                //MD5
+                string pws = STL.PDA.Util.common.EncryptMD5(txtPassword.Text);
+
+                try
+                {
+                    UserLogin.SI_MM028_PDA2SAP_LOGIN_OUTService svc = new UserLogin.SI_MM028_PDA2SAP_LOGIN_OUTService(); ;
                     svc.Url = WebServiceInstants.GetURL(ServiceType.LoginURL);
+                    svc.Credentials = nc.GetCredential(new Uri(svc.Url), "Basic");
                     UserLogin.ZFIS_PDA_LOGIN_REQ login_req = new STL.PDA.UserLogin.ZFIS_PDA_LOGIN_REQ();
-                    login_req.ZDATA.PASSWORD = sBuilder.ToString();
+                    login_req.ZDATA = new STL.PDA.UserLogin.ZFIS_PDA_LOGIN_REQDATA();
+                    login_req.ZDATA.PASSWORD = pws;
                     login_req.ZDATA.USERID = txtUserID.Text;
                     UserLogin.ZFIS_PDA_LOGIN_RES login_res = svc.SI_MM028_PDA2SAP_LOGIN_OUT(login_req);
                     if (login_res.IF_STATU.Equals("01"))
@@ -84,10 +99,46 @@ namespace STL.PDA
                         MessageBox.Show(login_res.IFMSG, "登陆失败");
                     }
                 }
-                else
+                catch (WebException ex)
                 {
-                    MessageBox.Show("Please enter User Name and password.");
+                    MessageBox.Show(ex.Status + ";" + ex.Response);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please enter User Name and password.");
+            }
+        }
+
+        private void libSet_Click(object sender, EventArgs e)
+        {
+            frmSetting frm = new frmSetting();
+            frm.ShowDialog();
+        }
+
+
+        private void txtUserID_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                txtPassword.Focus();
+            }
+        }
+
+        private void btn_exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btn_login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                login();
             }
         }
     }

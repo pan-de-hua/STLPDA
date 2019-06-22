@@ -28,7 +28,7 @@ namespace STL.PDA.UserLogin {
         
         /// <remarks/>
         public SI_MM028_PDA2SAP_LOGIN_OUTService() {
-            this.Url = "http://sap-podev.satlpec.com:50000/XISOAPAdapter/MessageServlet?senderParty=&send" +
+            this.Url = "http://mail.satellite-petrochemical.com:8000/XISOAPAdapter/MessageServlet?senderParty=&send" +
                 "erService=BC_WINCE&receiverParty=&receiverService=&interface=SI_MM028_PDA2SAP_LO" +
                 "GIN_OUT&interfaceNamespace=http%3A%2F%2Fwww.stlerpproject.com.cn%2FPDA%2FMM";
         }
